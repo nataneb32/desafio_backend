@@ -29,7 +29,7 @@ func (gs *GuestRepo) CreateGuest(g *guests.Guest) error {
 }
 
 // Create and return a GuestRepo
-func CreateGuestRepo(db *gorm.DB) *GuestRepo {
+func CreateGuestRepo(db *gorm.DB) guests.GuestRepo {
 	return &GuestRepo{
 		DB: db,
 	}
