@@ -1,7 +1,8 @@
 package guests
 
 type Guest struct {
-	id       string
-	nome     string
-	telefone string
+	ID        uint   `json:"id"`
+	Nome      string `json:"nome"`
+	Telefone  string `json:"telefone"`
+	Documento string `json:"documento"`
 }
