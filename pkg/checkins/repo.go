@@ -1,7 +1,7 @@
 package checkins
 
 type CheckInRepo interface {
-	//  GetCheckIn(*CheckIn) error
+	// GetCheckIn(*CheckIn) error
 	//	ListGuests(Guest, uint, uint) (error, []Guest)
 	//	GetAllGuest(Guest) (error, Guest)
 	CreateCheckIn(*CheckIn) error

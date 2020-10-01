@@ -13,7 +13,7 @@ type CheckInRepo struct {
 	DB *gorm.DB
 }
 
-func CreateCheckInRepo(db *gorm.DB) checkins.CheckInRepo {
+func CreateCheckInRepo(db *gorm.DB) *CheckInRepo {
 	return &CheckInRepo{
 		DB: db,
 	}
@@ -21,4 +21,7 @@ func CreateCheckInRepo(db *gorm.DB) checkins.CheckInRepo {
 
 func (cr *CheckInRepo) CreateCheckIn(ci *checkins.CheckIn) error {
 	return cr.DB.Model(&CheckInSchema{}).Create(ci).Error
+}
+func (cr *CheckInRepo) GetCheckIn(ci *checkins.CheckIn) error {
+	return cr.DB.Model(&CheckInSchema{}).First(ci).Error
 }

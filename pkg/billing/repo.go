@@ -5,10 +5,10 @@ import (
 )
 
 type CheckInRepo interface {
-	//  GetCheckIn(*CheckIn) error
+	GetCheckIn(*checkins.CheckIn) error
 	//	ListGuests(Guest, uint, uint) (error, []Guest)
 	//	GetAllGuest(Guest) (error, Guest)
-	CreateCheckIn(*checkins.CheckIn) error
+	//CreateCheckIn(*checkins.CheckIn) error
 	//	DeleteGuest(Guest) error
 
 }
