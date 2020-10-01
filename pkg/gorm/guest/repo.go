@@ -11,7 +11,7 @@ type GuestSchema struct {
 	Nome      string
 	Documento string
 	Telefone  string
-	CheckIns  []gorm_checkin.CheckInSchema
+	CheckIns  []gorm_checkin.CheckInSchema `gorm:"foreignKey:Hospede"`
 }
 
 type GuestRepo struct {
@@ -26,6 +26,8 @@ func (gs *GuestRepo) GetGuest(g *guests.Guest) error {
 
 // Creates a new Guest
 func (gs *GuestRepo) CreateGuest(g *guests.Guest) error {
+	// Setting to nil, because cannot create a guest with checkins.
+	g.CheckIns = nil
 	err := gs.DB.Model(&GuestSchema{}).Create(g).Error
 	return err
 }

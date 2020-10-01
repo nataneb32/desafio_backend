@@ -35,9 +35,16 @@ func (cs *CheckInService) GetCheckInGin(c *gin.Context) {
 	err := gin_helpers.JsonUnmarshalBodyTo(c, &checkin)
 
 	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "type": "Json Unmarshal", "message": err.Error()})
+		return
+	}
+
+	err = cs.CheckInRepo.GetCheckIn(&checkin)
+
+	if err != nil {
 		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
 		return
 	}
 
-	err = cs.CheckInRepo.CreateCheckIn
+	c.JSONP(200, checkin)
 }

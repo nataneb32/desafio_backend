@@ -34,13 +34,16 @@ func (ci *CheckIn) UnmarshalJSON(j []byte) error {
 
 	ci.ID = raw.ID
 	ci.Hospede = raw.Hospede
+
 	t, err := time.Parse(time.RFC3339, raw.DataEntrada)
-	if err != nil {
+	if err != nil && raw.DataEntrada != "" {
 		return err
 	}
+
 	ci.DataEntrada = t
 	t, err = time.Parse(time.RFC3339, raw.DataSaida)
-	if err != nil {
+
+	if err != nil && raw.DataSaida != "" {
 		return err
 	}
 	ci.DataSaida = t

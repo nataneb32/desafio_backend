@@ -13,5 +13,6 @@ func main() {
 	r.POST("/guests", a.GuestService.CreateGuestGin)
 	r.POST("/checkins", a.CheckInService.CreateCheckInGin)
 	r.POST("/bill", a.BillingService.CalculateBillOfGin)
+	r.POST("checkins/search", a.CheckInService.GetCheckInGin)
 	r.Run()
 }
