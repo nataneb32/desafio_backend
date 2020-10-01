@@ -1,12 +1,18 @@
 package gorm_checkin
 
 import (
+	"fmt"
 	"gorm.io/gorm"
 	"nataneb32.live/hospedagem/pkg/checkins"
+	"time"
 )
 
 type CheckInSchema struct {
-	gorm.Model
+	ID               uint      `gorm:"primaryKey"`
+	Hospede          uint      ``
+	DataEntrada      time.Time ``
+	DataSaida        time.Time ``
+	AdicionalVeiculo bool      ``
 }
 
 type CheckInRepo struct {
@@ -23,5 +29,6 @@ func (cr *CheckInRepo) CreateCheckIn(ci *checkins.CheckIn) error {
 	return cr.DB.Model(&CheckInSchema{}).Create(ci).Error
 }
 func (cr *CheckInRepo) GetCheckIn(ci *checkins.CheckIn) error {
-	return cr.DB.Model(&CheckInSchema{}).First(ci).Error
+	fmt.Println(ci)
+	return cr.DB.Model(&CheckInSchema{}).Where(ci).First(ci).Error
 }

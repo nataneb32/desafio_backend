@@ -8,6 +8,22 @@ import (
 // A Gin Handler to Create Checkin
 func (cs *CheckInService) CreateCheckInGin(c *gin.Context) {
 	var checkin CheckIn
-	gin_helpers.JsonUnmarshalBodyTo(c, &checkin)
+
+	err := gin_helpers.JsonUnmarshalBodyTo(c, &checkin)
+
+	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
+		return
+	}
+
+	// Since we are creating a checkin, the checkin struct can't have a id.
+	checkin.ID = 0
+
+	err = cs.CheckInRepo.CreateCheckIn(&checkin)
+	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
+		return
+	}
+
 	c.JSONP(200, checkin)
 }

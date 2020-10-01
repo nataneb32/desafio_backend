@@ -10,7 +10,17 @@ func (bs *BillingService) CalculateBillOfGin(c *gin.Context) {
 		CheckInID uint `json:"checkinID"`
 	}
 
-	gin_helpers.JsonUnmarshalBodyTo(c, &request)
+	err := gin_helpers.JsonUnmarshalBodyTo(c, &request)
 
-	c.JSON(200, &gin.H{"id": request.CheckInID})
+	if err != nil {
+		c.AbortWithError(400, c.Error(err))
+	}
+
+	err, bill := bs.CalculateBillOf(request.CheckInID)
+
+	if err != nil {
+		return
+	}
+
+	c.JSON(200, &gin.H{"price": bill})
 }

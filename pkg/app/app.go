@@ -36,6 +36,7 @@ func (a *App) init_database() {
 
 	// Migrate the schema
 	db.AutoMigrate(&gorm_guest.GuestSchema{})
+	db.AutoMigrate(&gorm_checkin.CheckInSchema{})
 }
 
 func (a *App) init_repositories() {
