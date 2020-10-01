@@ -1,7 +1,6 @@
 package checkins
 
 import (
-	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"nataneb32.live/hospedagem/pkg/gin_helpers"
 )
