@@ -2,6 +2,7 @@ package gorm_guest
 
 import (
 	"gorm.io/gorm"
+	"nataneb32.live/hospedagem/pkg/gorm/checkin"
 	"nataneb32.live/hospedagem/pkg/guests"
 )
 
@@ -10,6 +11,7 @@ type GuestSchema struct {
 	Nome      string
 	Documento string
 	Telefone  string
+	CheckIns  []gorm_checkin.CheckInSchema
 }
 
 type GuestRepo struct {
@@ -18,7 +20,7 @@ type GuestRepo struct {
 
 // Return The First Guest that matches with g
 func (gs *GuestRepo) GetGuest(g *guests.Guest) error {
-	err := gs.DB.Model(&GuestSchema{}).First(&g).Error
+	err := gs.DB.Model(&GuestSchema{}).Where(&g).First(&g).Error
 	return err
 }
 

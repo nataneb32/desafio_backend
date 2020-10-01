@@ -27,3 +27,17 @@ func (cs *CheckInService) CreateCheckInGin(c *gin.Context) {
 
 	c.JSONP(200, checkin)
 }
+
+// A Gin Handler to Get ChckIn
+func (cs *CheckInService) GetCheckInGin(c *gin.Context) {
+	var checkin CheckIn
+
+	err := gin_helpers.JsonUnmarshalBodyTo(c, &checkin)
+
+	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
+		return
+	}
+
+	err = cs.CheckInRepo.CreateCheckIn
+}

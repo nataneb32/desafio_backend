@@ -29,15 +29,17 @@ func (bs *BillingService) CalculateBillOf(checkinID uint) (error, uint) {
 	entrada := checkin.DataEntrada
 	saida := checkin.DataSaida
 
-	nWeekends, nWeekdays := countWeekendsAndWeekdayBetween(entrada, saida)
-
 	// extra dairy if saida as after 16:30hrs
+	// saida after 16:30hrs is the same as saida + 1 day
 	if saida.After(time.Date(saida.Year(), saida.Month(), saida.Day(), 16, 30, 0, 0, time.UTC)) {
-
+		saida = time.Date(saida.Year(), saida.Month(), saida.Day(), 0, 0, 0, 0, time.UTC).Add(24 * time.Hour)
 	}
+
+	nWeekends, nWeekdays := countWeekendsAndWeekdayBetween(entrada, saida)
 
 	bill += nWeekends*15000 + nWeekdays*12000
 
+	// charging extra for parking
 	if checkin.AdicionalVeiculo {
 		bill += nWeekends*2000 + nWeekdays*1500
 	}
