@@ -5,9 +5,9 @@ import (
 )
 
 type CheckIn struct {
-	ID               uint
-	Hospede          uint
-	DataEntrada      time.Time
-	DataSaida        time.Time
-	AdicionalVeiculo bool
+	ID               uint      `json:"id"`
+	Hospede          uint      `json:"hospede"`
+	DataEntrada      time.Time `json:"dataEntrada"`
+	DataSaida        time.Time `json:"dataSaida"`
+	AdicionalVeiculo bool      `json:"adicionalVeiculo"`
 }

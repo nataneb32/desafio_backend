@@ -3,14 +3,18 @@ package app
 import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"nataneb32.live/hospedagem/pkg/checkins"
+	"nataneb32.live/hospedagem/pkg/gorm/checkin"
 	"nataneb32.live/hospedagem/pkg/gorm/guest"
 	"nataneb32.live/hospedagem/pkg/guests"
 )
 
 type App struct {
-	DB           *gorm.DB
-	GuestService *guests.GuestService
-	GuestRepo    guests.GuestRepo
+	DB             *gorm.DB
+	GuestService   *guests.GuestService
+	GuestRepo      guests.GuestRepo
+	CheckInService *checkins.CheckInService
+	CheckInRepo    checkins.CheckInRepo
 }
 
 func Start() *App {
@@ -34,8 +38,10 @@ func (a *App) init_database() {
 
 func (a *App) init_repositories() {
 	a.GuestRepo = gorm_guest.CreateGuestRepo(a.DB)
+	a.CheckInRepo = gorm_checkin.CreateCheckInRepo(a.DB)
 }
 
 func (a *App) init_services() {
 	a.GuestService = guests.CreateGuestService(a.GuestRepo)
+	a.CheckInService = checkins.CreateCheckInService(a.CheckInRepo)
 }

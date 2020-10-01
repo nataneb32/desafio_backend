@@ -11,5 +11,6 @@ func main() {
 
 	r := gin.Default()
 	r.POST("/guests", a.GuestService.CreateGuestGin)
+	r.POST("/checkins", a.CheckInService.CreateCheckInGin)
 	r.Run()
 }
