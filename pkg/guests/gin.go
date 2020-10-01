@@ -1,18 +1,14 @@
 package guests
 
 import (
-	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"nataneb32.live/hospedagem/pkg/gin_helpers"
 )
-
-func JsonUnmarshalBodyTo(c *gin.Context, a interface{}) error {
-	return json.NewDecoder(c.Request.Body).Decode(a)
-}
 
 // A GinHandler to create a new guest
 func (gs *GuestService) CreateGuestGin(c *gin.Context) {
 	var guest Guest
-	JsonUnmarshalBodyTo(c, &guest)
+	gin_helpers.JsonUnmarshalBodyTo(c, &guest)
 
 	gs.GuestRepo.CreateGuest(&guest)
 
