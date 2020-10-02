@@ -26,6 +26,8 @@ func (gs *GuestRepo) GetGuest(g *guests.Guest) error {
 
 // Creates a new Guest
 func (gs *GuestRepo) CreateGuest(g *guests.Guest) error {
+	// Setting id to 0, because the id is automatically generated.
+	g.ID = 0
 	// Setting to nil, because cannot create a guest with checkins.
 	g.CheckIns = nil
 	err := gs.DB.Model(&GuestSchema{}).Create(g).Error
