@@ -32,10 +32,14 @@ sudo docker-compose build
 sudo docker-compose up
 ```
 
-## API
+## API com exemplos.
 
 ### GET /guest/:id - Consultar um hospede pelo id.
 ```
 curl --request GET \
   --url http://localhost:8080/guest/2
+```
+Return
+```json
+{"guest":{"id":2,"nome":"asdatsd","telefone":"1s23123","documento":"asdasd","checkins":[{"id":2,"hospede":2,"dataEntrada":null,"dataSaida":null,"adicionalVeiculo":false},{"id":3,"hospede":2,"dataEntrada":"2020-08-29T08:00:00Z","dataSaida":"2020-09-30T12:00:00Z","adicionalVeiculo":false},{"id":4,"hospede":2,"dataEntrada":"2020-08-29T08:00:00Z","dataSaida":"2020-09-30T12:00:00Z","adicionalVeiculo":false},{"id":5,"hospede":2,"dataEntrada":"2020-08-29T08:00:00Z","dataSaida":"2020-09-30T12:00:00Z","adicionalVeiculo":false}]},"lastBill":414000,"totalBill":1242000}
 ```
