@@ -36,12 +36,7 @@ func (gs *GuestService) DeleteGuestGin(c *gin.Context) {
 
 // A GinHandler to searh guests.
 func (gs *GuestService) SearchGuestGin(c *gin.Context) {
-	var query struct {
-		Documento string
-		Nome      string
-		Limit     uint
-		Page      uint
-	}
+	var query GuestQuery
 	err := c.BindQuery(&query)
 
 	if err != nil {
@@ -55,12 +50,7 @@ func (gs *GuestService) SearchGuestGin(c *gin.Context) {
 
 //
 func (gs *GuestService) SearchGuestInHotelGin(c *gin.Context) {
-	var query struct {
-		Documento string
-		Nome      string
-		Limit     uint
-		Page      uint
-	}
+	var query GuestQuery
 	err := c.BindQuery(&query)
 
 	if err != nil {
@@ -70,7 +60,7 @@ func (gs *GuestService) SearchGuestInHotelGin(c *gin.Context) {
 
 	result := gs.GuestRepo.SearchInHotelGuest(query)
 
-	c.JSONP(200, result)
+	c.JSON(200, gin.H{"guests": result.Guests, "totalPages": result.TotalPages})
 }
 
 // A GinHandler to get a guest.
@@ -88,8 +78,8 @@ func (gs *GuestService) GetGuestGin(c *gin.Context) {
 		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
 		return
 	}
-	lbill := gs.CheckInService.NewestBillOf(guest.CheckIns)
-	bill := gs.CheckInService.SumBillOf(guest.CheckIns)
+	lbill := gs.BillingService.NewestBillOf(guest.CheckIns)
+	bill := gs.BillingService.SumBillOf(guest.CheckIns)
 	c.JSONP(200, gin.H{"guest": guest, "totalBill": bill, "lastBill": lbill})
 }
 

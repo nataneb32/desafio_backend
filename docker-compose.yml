@@ -4,23 +4,21 @@ services:
         build: .
         ports: 
             - 8080:8080 
-        networks:
-            - fullstack
         depends_on:
             - postgres
+        volumes:
+            - .:/app
+        links:
+            - postgres
+        command: ./main
     postgres:
         image: postgres:latest
-         
+        volumes:
+            - "./data/postgres:/var/lib/postgresql/data"
         environment:
-          - POSTGRES_USER=${DB_USER}  
-          - POSTGRES_PASSWORD=${DB_PASSWORD}
-          - POSTGRES_DB=${DB_NAME}
-          - DATABASE_HOST=${DB_HOST} 
+            - POSTGRES_USER=test
+            - POSTGRES_PASSWORD=test
+            - POSTGRES_DB=test_db
         ports:
           - '5432:5432'
-        networks:
-          - fullstack
-networks:
-  fullstack:
-    driver: bridge
 

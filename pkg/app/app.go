@@ -1,7 +1,7 @@
 package app
 
 import (
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"nataneb32.live/hospedagem/pkg/billing"
 	"nataneb32.live/hospedagem/pkg/checkin"
@@ -29,7 +29,9 @@ func Start() *App {
 }
 
 func (a *App) init_database() {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+
+	dsn := "host=postgres user=test password=test dbname=test_db port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -49,5 +51,5 @@ func (a *App) init_services() {
 	// Setting fees to the billing services
 	a.BillingService = billing.NewBillingService(1500, 12000, 2000, 15000)
 	a.CheckInService = checkins.CreateCheckInService(a.CheckInRepo, a.BillingService)
-	a.GuestService = guests.CreateGuestService(a.GuestRepo, a.CheckInService)
+	a.GuestService = guests.CreateGuestService(a.GuestRepo, a.BillingService)
 }

@@ -27,7 +27,15 @@ solução, você deve detalhar o que deve ser feito no arquivo README.md de seu
 projeto.
 
 ## Como dar build?
-
+```/bin/sh
+sudo docker-compose build
+sudo docker-compose up
+```
 
 ## API
 
+### GET /guest/:id - Consultar um hospede pelo id.
+```
+curl --request GET \
+  --url http://localhost:8080/guest/2
+```

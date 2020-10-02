@@ -14,10 +14,13 @@ func (a *App) CreateAppHandlersGin() *gin.Engine {
 	r.GET("/guests/inhotel", a.GuestService.SearchGuestInHotelGin)
 	r.GET("/guests/outhotel", a.GuestService.SearchGuestInHotelGin)
 	r.GET("/guest/:userId", a.GuestService.GetGuestGin)
+
 	// r.POST("/guest/:id/checkin", a.CheckInService.DoCheckInGin)
 	// r.POST("/checkout", a.CheckInService.DoCheckOutGin)
+
 	r.POST("/checkin", a.CheckInService.CreateCheckInGin)
 	r.GET("/checkin/:id/bill", a.CheckInService.CalculateBillGin)
 	r.GET("/checkin/:id", a.CheckInService.GetCheckInGin)
+	// r.PUT("/checkin/:id")
 	return r
 }

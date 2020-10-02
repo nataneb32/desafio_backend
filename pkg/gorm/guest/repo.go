@@ -30,12 +30,7 @@ func (gs *GuestRepo) UpdateGuest(id uint, g *guests.Guest) error {
 }
 
 // Search Guest
-func (gs *GuestRepo) SearchGuest(query struct {
-	Documento string
-	Nome      string
-	Limit     uint
-	Page      uint
-}) struct {
+func (gs *GuestRepo) SearchGuest(query guests.GuestQuery) struct {
 	Guests     []guests.Guest
 	TotalPages uint
 } {
@@ -55,11 +50,13 @@ func (gs *GuestRepo) SearchGuest(query struct {
 
 	var count int64
 	gs.DB.Model(&guests.Guest{}).
+		Where("telefone LIKE ?", "%"+query.Telefone+"%").
 		Where("nome LIKE ?", "%"+query.Nome+"%").
 		Where("documento LIKE ?", "%"+query.Documento+"%").
 		Count(&count)
 
 	gs.DB.Model(&guests.Guest{}).
+		Where("telefone LIKE ?", "%"+query.Telefone+"%").
 		Where("nome LIKE ?", "%"+query.Nome+"%").
 		Where("documento LIKE ?", "%"+query.Documento+"%").
 		Preload("CheckIns").
@@ -87,12 +84,7 @@ func (gs *GuestRepo) DeleteGuest(guestId uint) error {
 	return gs.DB.Model(&guests.Guest{}).Where("id = ?", guestId).Delete(guestId).Error
 }
 
-func (gs *GuestRepo) SearchInHotelGuest(query struct {
-	Documento string
-	Nome      string
-	Limit     uint
-	Page      uint
-}) struct {
+func (gs *GuestRepo) SearchInHotelGuest(query guests.GuestQuery) struct {
 	Guests     []guests.Guest
 	TotalPages uint
 } {
@@ -112,19 +104,21 @@ func (gs *GuestRepo) SearchInHotelGuest(query struct {
 
 	var count int64
 	gs.DB.Model(&guests.Guest{}).
-		Select("GUESTS.*").
+		Select("guests.*").
 		Joins("JOIN check_ins ON guests.id = check_ins.hospede and check_ins.data_saida is null").
+		Where("telefone LIKE ?", "%"+query.Telefone+"%").
 		Where("guests.nome LIKE ?", "%"+query.Nome+"%").
 		Where("guests.documento LIKE ?", "%"+query.Documento+"%").
-		Group("GUESTS.ID").
+		Group("guests.id").
 		Count(&count)
 
 	gs.DB.Model(&guests.Guest{}).
-		Select("GUESTS.*").
+		Select("guests.*").
 		Joins("JOIN check_ins ON guests.id = check_ins.hospede and check_ins.data_saida is null").
+		Where("telefone LIKE ?", "%"+query.Telefone+"%").
 		Where("nome LIKE ?", "%"+query.Nome+"%").
 		Where("documento LIKE ?", "%"+query.Documento+"%").
-		Group("GUESTS.ID").
+		Group("guests.id").
 		Preload("CheckIns").
 		Limit(int(query.Limit)).
 		Offset(int((query.Page - 1) * query.Limit)).

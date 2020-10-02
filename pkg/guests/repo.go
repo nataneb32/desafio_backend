@@ -7,21 +7,11 @@ type GuestRepo interface {
 	UpdateGuest(uint, *Guest) error
 	CreateGuest(*Guest) error
 	DeleteGuest(uint) error
-	SearchGuest(query struct {
-		Documento string
-		Nome      string
-		Limit     uint
-		Page      uint
-	}) struct {
+	SearchGuest(query GuestQuery) struct {
 		Guests     []Guest
 		TotalPages uint
 	}
-	SearchInHotelGuest(query struct {
-		Documento string
-		Nome      string
-		Limit     uint
-		Page      uint
-	}) struct {
+	SearchInHotelGuest(query GuestQuery) struct {
 		Guests     []Guest
 		TotalPages uint
 	}

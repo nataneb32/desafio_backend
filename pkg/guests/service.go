@@ -1,17 +1,17 @@
 package guests
 
 import (
-	"nataneb32.live/hospedagem/pkg/checkins"
+	"nataneb32.live/hospedagem/pkg/billing"
 )
 
 type GuestService struct {
 	GuestRepo      GuestRepo
-	CheckInService *checkins.CheckInService
+	BillingService *billing.BillingService
 }
 
-func CreateGuestService(GuestRepo GuestRepo, b *checkins.CheckInService) *GuestService {
+func CreateGuestService(GuestRepo GuestRepo, b *billing.BillingService) *GuestService {
 	return &GuestService{
 		GuestRepo:      GuestRepo,
-		CheckInService: b,
+		BillingService: b,
 	}
 }

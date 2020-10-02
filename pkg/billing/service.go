@@ -82,3 +82,26 @@ func (bs *BillingService) SumBillOf(checkins []checkin.CheckIn) uint {
 	}
 	return bill
 }
+
+func (bs *BillingService) NewestBillOf(checkins []checkin.CheckIn) uint {
+	var newest checkin.CheckIn
+	for _, checkin := range checkins {
+		if checkin.DataEntrada == nil {
+			continue
+		}
+		if checkin.DataSaida == nil {
+			continue
+		}
+		if newest.DataEntrada == nil {
+			newest = checkin
+			continue
+		}
+		if newest.DataEntrada.Before(*checkin.DataEntrada) {
+			newest = checkin
+		}
+	}
+	if newest.DataEntrada == nil || newest.DataSaida == nil {
+		return 0
+	}
+	return bs.CalculateBillOf(*newest.DataEntrada, *newest.DataSaida, newest.AdicionalVeiculo)
+}
