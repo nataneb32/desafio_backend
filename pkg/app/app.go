@@ -4,6 +4,7 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"nataneb32.live/hospedagem/pkg/billing"
+	"nataneb32.live/hospedagem/pkg/checkin"
 	"nataneb32.live/hospedagem/pkg/checkins"
 	"nataneb32.live/hospedagem/pkg/gorm/checkin"
 	"nataneb32.live/hospedagem/pkg/gorm/guest"
@@ -36,7 +37,7 @@ func (a *App) init_database() {
 
 	// Migrate the schema
 	db.AutoMigrate(&guests.Guest{})
-	db.AutoMigrate(&checkins.CheckIn{})
+	db.AutoMigrate(&checkin.CheckIn{})
 }
 
 func (a *App) init_repositories() {

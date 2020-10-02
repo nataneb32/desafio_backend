@@ -1,4 +1,4 @@
-package checkins
+package checkin
 
 import (
 	"encoding/json"

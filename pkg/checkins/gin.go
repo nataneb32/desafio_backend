@@ -2,13 +2,14 @@ package checkins
 
 import (
 	"github.com/gin-gonic/gin"
+	"nataneb32.live/hospedagem/pkg/checkin"
 	"nataneb32.live/hospedagem/pkg/gin_helpers"
 	"strconv"
 )
 
 // A Gin Handler to Create Checkin
 func (cs *CheckInService) CreateCheckInGin(c *gin.Context) {
-	var checkin CheckIn
+	var checkin checkin.CheckIn
 
 	err := gin_helpers.JsonUnmarshalBodyTo(c, &checkin)
 
@@ -33,7 +34,7 @@ func (cs *CheckInService) GetCheckInGin(c *gin.Context) {
 		return
 	}
 
-	var checkin CheckIn
+	var checkin checkin.CheckIn
 	checkin.ID = uint(id)
 
 	err = cs.CheckInRepo.GetCheckIn(&checkin)

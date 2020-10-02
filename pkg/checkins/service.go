@@ -3,6 +3,7 @@ package checkins
 import (
 	"errors"
 	"nataneb32.live/hospedagem/pkg/billing"
+	"nataneb32.live/hospedagem/pkg/checkin"
 	"time"
 )
 
@@ -14,7 +15,7 @@ type CheckInService struct {
 // Create a checkin where data_entrada is null and data_saida is now.
 func (cs *CheckInService) DoCheckIn(guestId uint, adicionalVeiculo bool) error {
 	now := time.Now()
-	checkin := CheckIn{
+	checkin := checkin.CheckIn{
 		Hospede:          guestId,
 		AdicionalVeiculo: adicionalVeiculo,
 		DataEntrada:      &now,
@@ -25,7 +26,7 @@ func (cs *CheckInService) DoCheckIn(guestId uint, adicionalVeiculo bool) error {
 // Update a checkin to data_saida = now.
 func (cs *CheckInService) DoCheckOut(checkinID uint, adicionalVeiculo bool) error {
 	now := time.Now()
-	checkin := CheckIn{
+	checkin := checkin.CheckIn{
 		DataSaida: &now,
 	}
 
@@ -33,7 +34,7 @@ func (cs *CheckInService) DoCheckOut(checkinID uint, adicionalVeiculo bool) erro
 }
 
 func (cs *CheckInService) CalculateBill(checkinID uint) (error, uint) {
-	var checkin CheckIn
+	var checkin checkin.CheckIn
 	checkin.ID = checkinID
 	err := cs.CheckInRepo.GetCheckIn(&checkin)
 	if err != nil {
@@ -52,7 +53,7 @@ func (cs *CheckInService) CalculateBill(checkinID uint) (error, uint) {
 	return nil, bill
 }
 
-func (cs *CheckInService) SumBillOf(checkins []CheckIn) uint {
+func (cs *CheckInService) SumBillOf(checkins []checkin.CheckIn) uint {
 	bill := uint(0)
 	for _, checkin := range checkins {
 		if checkin.DataEntrada == nil {
@@ -64,11 +65,11 @@ func (cs *CheckInService) SumBillOf(checkins []CheckIn) uint {
 
 		bill += cs.BillingService.CalculateBillOf(*checkin.DataEntrada, *checkin.DataSaida, checkin.AdicionalVeiculo)
 	}
-	return bill
+	return cs.BillingService.SumBillOf(checkins)
 }
 
-func (cs *CheckInService) NewestBillOf(checkins []CheckIn) uint {
-	var newest CheckIn
+func (cs *CheckInService) NewestBillOf(checkins []checkin.CheckIn) uint {
+	var newest checkin.CheckIn
 	for _, checkin := range checkins {
 		if checkin.DataEntrada == nil {
 			continue
@@ -91,7 +92,7 @@ func (cs *CheckInService) NewestBillOf(checkins []CheckIn) uint {
 }
 
 func (cs *CheckInService) CalculateTotalSpendBy(guestId uint) (error, uint) {
-	err, checkins := cs.CheckInRepo.GetAllCheckIn(&CheckIn{Hospede: guestId})
+	err, checkins := cs.CheckInRepo.GetAllCheckIn(&checkin.CheckIn{Hospede: guestId})
 	if err != nil {
 		return err, 0
 	}

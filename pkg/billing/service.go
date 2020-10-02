@@ -2,6 +2,7 @@ package billing
 
 import (
 	"fmt"
+	"nataneb32.live/hospedagem/pkg/checkin"
 	"time"
 )
 
@@ -42,7 +43,6 @@ func (bs *BillingService) CalculateBillOf(entrada, saida time.Time, adicionalVei
 	}
 
 	return bill
-
 }
 
 func countWeekendsAndWeekdayBetween(in time.Time, out time.Time) (uint, uint) {
@@ -67,4 +67,18 @@ func countWeekendsAndWeekdayBetween(in time.Time, out time.Time) (uint, uint) {
 
 	fmt.Println(dn)
 	return nWeekends, nWeekdays
+}
+func (bs *BillingService) SumBillOf(checkins []checkin.CheckIn) uint {
+	bill := uint(0)
+	for _, checkin := range checkins {
+		if checkin.DataEntrada == nil {
+			continue
+		}
+		if checkin.DataSaida == nil {
+			continue
+		}
+
+		bill += bs.CalculateBillOf(*checkin.DataEntrada, *checkin.DataSaida, checkin.AdicionalVeiculo)
+	}
+	return bill
 }
