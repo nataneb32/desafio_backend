@@ -6,4 +6,13 @@ type GuestRepo interface {
 	//	GetAllGuest(Guest) (error, Guest)
 	CreateGuest(*Guest) error
 	//	DeleteGuest(Guest) error
+	SearchGuest(query struct {
+		Documento string
+		Nome      string
+		Limit     uint
+		Page      uint
+	}) struct {
+		Guests     []Guest
+		TotalPages uint
+	}
 }

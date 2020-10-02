@@ -8,11 +8,10 @@ func (a *App) CreateAppHandlersGin() *gin.Engine {
 	r := gin.Default()
 
 	r.POST("/guest", a.GuestService.CreateGuestGin)
-	// r.GET("/guest", a.GuestService.SearchGuestGin)
+	r.GET("/guest", a.GuestService.SearchGuestGin)
 	// r.GET("/guest/:id", a.GuestService.GetGuestGin)
 	// r.POST("/guest/:id/checkin", a.CheckInService.DoCheckInGin)
 	// r.POST("/guest/:id/checkout", a.CheckInService.DoCheckOutGin)
-	// r.POST("/guest/:id/", a.BillingService.GetLastBill)
 	// r.GET("/guest/inhotel", a.GuestService.GetGuestInHotelGin)
 	// r.GET("/guest/outhotel", a.GuestService.GetGuestOutHotelGin)
 	r.POST("/checkin", a.CheckInService.CreateCheckInGin)

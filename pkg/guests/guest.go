@@ -5,9 +5,9 @@ import (
 )
 
 type Guest struct {
-	ID        uint               `json:"id"`
+	ID        uint               `json:"id" gorm:"primaryKey"`
 	Nome      string             `json:"nome"`
 	Telefone  string             `json:"telefone"`
 	Documento string             `json:"documento"`
-	CheckIns  []checkins.CheckIn `json:"checkins"`
+	CheckIns  []checkins.CheckIn `json:"checkins" gorm:"foreignKey:Hospede"`
 }

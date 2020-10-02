@@ -7,7 +7,7 @@ import (
 )
 
 type CheckIn struct {
-	ID               uint      `json:"id"`
+	ID               uint      `json:"id" gorm:"primaryKey"`
 	Hospede          uint      `json:"hospede"`
 	DataEntrada      time.Time `json:"dataEntrada"`
 	DataSaida        time.Time `json:"dataSaida"`
