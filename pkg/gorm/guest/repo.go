@@ -62,10 +62,13 @@ func (gs *GuestRepo) SearchGuest(query struct {
 		Limit(int(query.Limit)).
 		Offset(int((query.Page - 1) * query.Limit)).
 		Find(&result.Guests)
+
 	result.TotalPages = (uint(count) / query.Limit)
+
 	if (uint(count) % query.Limit) != 0 {
 		result.TotalPages++
 	}
+
 	return result
 }
 

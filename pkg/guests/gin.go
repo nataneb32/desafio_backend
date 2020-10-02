@@ -3,6 +3,7 @@ package guests
 import (
 	"github.com/gin-gonic/gin"
 	"nataneb32.live/hospedagem/pkg/gin_helpers"
+	"strconv"
 )
 
 // A GinHandler to create a new guest
@@ -45,5 +46,17 @@ func (gs *GuestService) SearchGuestGin(c *gin.Context) {
 
 // A GinHandler to get a guest.
 func (gs *GuestService) GetGuestGin(c *gin.Context) {
+	userId, err := strconv.ParseUint(c.Param("userId"), 10, 64)
+	if err != nil {
+		return
+	}
+	var guest Guest
+	guest.ID = uint(userId)
 
+	err = gs.GuestRepo.GetGuest(&guest)
+	if err != nil {
+		return
+	}
+
+	c.JSONP(200, guest)
 }
