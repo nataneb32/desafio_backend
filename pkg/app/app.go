@@ -40,12 +40,13 @@ func (a *App) init_database() {
 }
 
 func (a *App) init_repositories() {
-	a.GuestRepo = gorm_guest.CreateGuestRepo(a.DB)
 	a.CheckInRepo = gorm_checkin.CreateCheckInRepo(a.DB)
+	a.GuestRepo = gorm_guest.CreateGuestRepo(a.DB)
 }
 
 func (a *App) init_services() {
-	a.GuestService = guests.CreateGuestService(a.GuestRepo)
-	a.CheckInService = checkins.CreateCheckInService(a.CheckInRepo)
-	a.BillingService = billing.NewBillingService(a.CheckInRepo)
+	// Setting fees to the billing services
+	a.BillingService = billing.NewBillingService(1500, 12000, 2000, 15000)
+	a.CheckInService = checkins.CreateCheckInService(a.CheckInRepo, a.BillingService)
+	a.GuestService = guests.CreateGuestService(a.GuestRepo, a.CheckInService)
 }

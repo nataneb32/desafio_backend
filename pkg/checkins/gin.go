@@ -3,6 +3,7 @@ package checkins
 import (
 	"github.com/gin-gonic/gin"
 	"nataneb32.live/hospedagem/pkg/gin_helpers"
+	"strconv"
 )
 
 // A Gin Handler to Create Checkin
@@ -16,9 +17,6 @@ func (cs *CheckInService) CreateCheckInGin(c *gin.Context) {
 		return
 	}
 
-	// Since we are creating a checkin, the checkin struct can't have a id.
-	checkin.ID = 0
-
 	err = cs.CheckInRepo.CreateCheckIn(&checkin)
 	if err != nil {
 		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
@@ -30,14 +28,13 @@ func (cs *CheckInService) CreateCheckInGin(c *gin.Context) {
 
 // A Gin Handler to Get ChckIn
 func (cs *CheckInService) GetCheckInGin(c *gin.Context) {
-	var checkin CheckIn
-
-	err := gin_helpers.JsonUnmarshalBodyTo(c, &checkin)
-
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
-		c.AbortWithStatusJSON(400, gin.H{"error": true, "type": "Json Unmarshal", "message": err.Error()})
 		return
 	}
+
+	var checkin CheckIn
+	checkin.ID = uint(id)
 
 	err = cs.CheckInRepo.GetCheckIn(&checkin)
 
@@ -47,4 +44,37 @@ func (cs *CheckInService) GetCheckInGin(c *gin.Context) {
 	}
 
 	c.JSONP(200, checkin)
+}
+
+func (cs *CheckInService) DoCheckInGin(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		return
+	}
+
+	var request struct {
+		AdicionalVeiculo bool `json:"adicionalVeiculo"`
+	}
+
+	err = gin_helpers.JsonUnmarshalBodyTo(c, &request)
+	if err != nil {
+		return
+	}
+
+	cs.DoCheckIn(uint(id), request.AdicionalVeiculo)
+	c.Status(200)
+}
+
+func (cs *CheckInService) CalculateBillGin(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		return
+	}
+
+	err, bill := cs.CalculateBill(uint(id))
+	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{"bill": bill})
 }

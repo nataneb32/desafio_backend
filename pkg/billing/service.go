@@ -2,32 +2,29 @@ package billing
 
 import (
 	"fmt"
-	"nataneb32.live/hospedagem/pkg/checkins"
 	"time"
 )
 
 type BillingService struct {
-	CheckInRepo CheckInRepo
+	ParkingFee        uint
+	DairyFee          uint
+	WeekendDairyFee   uint
+	WeekendParkingFee uint
 }
 
-func NewBillingService(cr CheckInRepo) *BillingService {
+// Create a billing service. fee is in cents.
+func NewBillingService(pf, df, wpf, wdf uint) *BillingService {
 	return &BillingService{
-		CheckInRepo: cr,
+		DairyFee:          df,
+		WeekendDairyFee:   wdf,
+		ParkingFee:        pf,
+		WeekendParkingFee: wpf,
 	}
 }
 
-//Returns the price of the checkin.
-func (bs *BillingService) CalculateBillOf(checkinID uint) (error, uint) {
+//Returns the price in cents of the checkin.
+func (bs *BillingService) CalculateBillOf(entrada, saida time.Time, adicionalVeiculo bool) uint {
 	bill := uint(0)
-	var checkin checkins.CheckIn
-	checkin.ID = checkinID
-	err := bs.CheckInRepo.GetCheckIn(&checkin)
-	if err != nil {
-		return err, 0
-	}
-
-	entrada := checkin.DataEntrada
-	saida := checkin.DataSaida
 
 	// extra dairy if saida as after 16:30hrs
 	// saida after 16:30hrs is the same as saida + 1 day
@@ -37,14 +34,14 @@ func (bs *BillingService) CalculateBillOf(checkinID uint) (error, uint) {
 
 	nWeekends, nWeekdays := countWeekendsAndWeekdayBetween(entrada, saida)
 
-	bill += nWeekends*15000 + nWeekdays*12000
+	bill += nWeekends*bs.WeekendDairyFee + nWeekdays*bs.DairyFee
 
 	// charging extra for parking
-	if checkin.AdicionalVeiculo {
-		bill += nWeekends*2000 + nWeekdays*1500
+	if adicionalVeiculo {
+		bill += nWeekends*bs.WeekendParkingFee + nWeekdays*bs.ParkingFee
 	}
 
-	return nil, bill
+	return bill
 
 }
 
