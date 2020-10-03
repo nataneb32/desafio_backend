@@ -34,12 +34,96 @@ sudo docker-compose up
 
 ## API com exemplos.
 
+### POST /guest - Cria um hospede.
+```/bin/sh
+curl --request POST \
+  --url http://localhost:8080/guest \
+  --header 'content-type: application/json' \
+  --data '{
+	"nome": "Foo",
+	"telefone": "11111111",
+	"documento": "12345/123"
+}'
+```
+
+retorna
+
+```json
+{
+  "id": 2,
+  "nome": "Foo",
+  "telefone": "11111111",
+  "documento": "12345/123",
+  "checkins": null
+}
+```
+
 ### GET /guest/:id - Consultar um hospede pelo id.
 ```
 curl --request GET \
   --url http://localhost:8080/guest/2
 ```
+
 Return
+
 ```json
-{"guest":{"id":2,"nome":"asdatsd","telefone":"1s23123","documento":"asdasd","checkins":[{"id":2,"hospede":2,"dataEntrada":null,"dataSaida":null,"adicionalVeiculo":false},{"id":3,"hospede":2,"dataEntrada":"2020-08-29T08:00:00Z","dataSaida":"2020-09-30T12:00:00Z","adicionalVeiculo":false},{"id":4,"hospede":2,"dataEntrada":"2020-08-29T08:00:00Z","dataSaida":"2020-09-30T12:00:00Z","adicionalVeiculo":false},{"id":5,"hospede":2,"dataEntrada":"2020-08-29T08:00:00Z","dataSaida":"2020-09-30T12:00:00Z","adicionalVeiculo":false}]},"lastBill":414000,"totalBill":1242000}
+{
+	"guest":{
+		"id":2,
+		"nome":"Foo",
+		"telefone":"2499999999",
+		"documento":"12341-123",
+		"checkins":[
+			{
+			"id":2,
+			"hospede":2,
+			"dataEntrada":"2020-08-29T08:00:00Z",
+			"dataSaida":"2020-09-30T12:00:00Z",
+			"adicionalVeiculo":false
+			}
+		]
+		},"lastBill":414000,"totalBill":1242000}
 ```
+
+### GET /guests - Faz uma pesquisa com querys pelo hospede.
+```/bin/sh
+curl --request GET \
+  --url 'http://localhost:8080/guests?nome=Foo&limit=10&page=1&telefone=11111111&documento=12345%2F123&=' 
+``` 
+retorna
+```json
+{
+  "guests": [
+    {
+      "id": 6,
+      "nome": "Foo",
+      "telefone": "11111111",
+      "documento": "12345/123",
+      "checkins": []
+    }
+  ],
+  "totalPages": 1
+}
+```
+
+### PUT /guest/:id - Atualiza os valores do hospede com id = :id
+```/bin/sh
+curl --request PUT \
+  --url http://localhost:8080/guest/2 \
+  --header 'content-type: application/json' \
+  --data '{
+	"nome": "Foo2",
+	"telefone": "11111111",
+	"documento": "12345/123"
+}'
+```
+
+retorna 200 OK
+
+### DELETE /guest/:id - Deleta o hospede com id = :id
+```/bin/sh
+curl --request DELETE \
+  --url http://localhost:8080/guest/2
+```
+
+retorna 200 OK

@@ -45,7 +45,7 @@ func (gs *GuestService) SearchGuestGin(c *gin.Context) {
 	}
 
 	result := gs.GuestRepo.SearchGuest(query)
-	c.JSONP(200, result)
+	c.JSON(200, gin.H{"totalPages": result.TotalPages, "guests": result.Guests})
 }
 
 //
