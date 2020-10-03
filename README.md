@@ -26,6 +26,10 @@ adequado para resolver o problema;
 solução, você deve detalhar o que deve ser feito no arquivo README.md de seu
 projeto.
 
+## Rodar testes
+`go test ./tests/*`
+
+
 ## Como dar build e run?
 ### Build
 
