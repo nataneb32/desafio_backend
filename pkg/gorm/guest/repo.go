@@ -137,3 +137,51 @@ func (gs *GuestRepo) SearchInHotelGuest(query guests.GuestQuery) struct {
 
 	return result
 }
+
+func (gs *GuestRepo) SearchOutHotelGuest(query guests.GuestQuery) struct {
+	Guests     []guests.Guest
+	TotalPages uint
+} {
+	// Default Value to Page
+	if query.Page == 0 {
+		query.Page = 1
+	}
+	// Default Value to Limit
+	if query.Limit == 0 {
+		query.Limit = 10
+	}
+
+	var result struct {
+		Guests     []guests.Guest
+		TotalPages uint
+	}
+
+	var count int64
+	gs.DB.Model(&guests.Guest{}).
+		Raw("SELECT * from guests EXCEPT SELECT guests.* FROM guests JOIN check_ins ON guests.id = check_ins.hospede and check_ins.data_saida is null").
+		Where("guests.telefone LIKE ?", "%"+query.Telefone+"%").
+		Where("guests.nome LIKE ?", "%"+query.Nome+"%").
+		Where("guests.documento LIKE ?", "%"+query.Documento+"%").
+		Group("guests.id").
+		Count(&count)
+
+	gs.DB.Model(&guests.Guest{}).
+		Select("guests.*").
+		Raw("SELECT * from guests EXCEPT SELECT guests.* FROM guests JOIN check_ins ON guests.id = check_ins.hospede and check_ins.data_saida is null").
+		Where("guests.telefone LIKE ?", "%"+query.Telefone+"%").
+		Where("guests.nome LIKE ?", "%"+query.Nome+"%").
+		Where("guests.documento LIKE ?", "%"+query.Documento+"%").
+		Group("guests.id").
+		Preload("CheckIns").
+		Limit(int(query.Limit)).
+		Offset(int((query.Page - 1) * query.Limit)).
+		Find(&result.Guests)
+
+	result.TotalPages = (uint(count) / query.Limit)
+
+	if (uint(count) % query.Limit) != 0 {
+		result.TotalPages++
+	}
+
+	return result
+}

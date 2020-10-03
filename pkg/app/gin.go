@@ -12,7 +12,7 @@ func (a *App) CreateAppHandlersGin() *gin.Engine {
 	r.POST("/guest", a.GuestService.CreateGuestGin)
 	r.GET("/guests", a.GuestService.SearchGuestGin)
 	r.GET("/guests/inhotel", a.GuestService.SearchGuestInHotelGin)
-	r.GET("/guests/outhotel", a.GuestService.SearchGuestInHotelGin)
+	r.GET("/guests/outhotel", a.GuestService.SearchGuestOutHotelGin)
 	r.GET("/guest/:userId", a.GuestService.GetGuestGin)
 
 	// r.POST("/guest/:id/checkin", a.CheckInService.DoCheckInGin) //TODO

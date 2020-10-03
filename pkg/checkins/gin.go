@@ -31,6 +31,7 @@ func (cs *CheckInService) CreateCheckInGin(c *gin.Context) {
 func (cs *CheckInService) GetCheckInGin(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
 		return
 	}
 
@@ -50,6 +51,7 @@ func (cs *CheckInService) GetCheckInGin(c *gin.Context) {
 func (cs *CheckInService) DoCheckInGin(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
 		return
 	}
 
@@ -59,6 +61,7 @@ func (cs *CheckInService) DoCheckInGin(c *gin.Context) {
 
 	err = gin_helpers.JsonUnmarshalBodyTo(c, &request)
 	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
 		return
 	}
 
@@ -69,6 +72,7 @@ func (cs *CheckInService) DoCheckInGin(c *gin.Context) {
 func (cs *CheckInService) CalculateBillGin(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
 		return
 	}
 
@@ -93,5 +97,28 @@ func (cs *CheckInService) DeleteCheckInGin(c *gin.Context) {
 		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
 		return
 	}
+	c.Status(200)
+}
+
+//Put Gin Handler
+func (cs *CheckInService) UpdateCheckInGin(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
+		return
+	}
+	var checkin checkin.CheckIn
+	err = gin_helpers.JsonUnmarshalBodyTo(c, &checkin)
+	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
+		return
+	}
+
+	err = cs.CheckInRepo.UpdateCheckIn(uint(id), &checkin)
+	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
+		return
+	}
+
 	c.Status(200)
 }

@@ -11,6 +11,10 @@ type GuestRepo interface {
 		Guests     []Guest
 		TotalPages uint
 	}
+	SearchOutHotelGuest(query GuestQuery) struct {
+		Guests     []Guest
+		TotalPages uint
+	}
 	SearchInHotelGuest(query GuestQuery) struct {
 		Guests     []Guest
 		TotalPages uint

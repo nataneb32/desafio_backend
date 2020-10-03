@@ -65,6 +65,20 @@ func (gs *GuestService) SearchGuestInHotelGin(c *gin.Context) {
 	c.JSON(200, gin.H{"guests": result.Guests, "totalPages": result.TotalPages})
 }
 
+func (gs *GuestService) SearchGuestOutHotelGin(c *gin.Context) {
+	var query GuestQuery
+	err := c.BindQuery(&query)
+
+	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
+		return
+	}
+
+	result := gs.GuestRepo.SearchOutHotelGuest(query)
+
+	c.JSON(200, gin.H{"guests": result.Guests, "totalPages": result.TotalPages})
+}
+
 // A GinHandler to get a guest.
 func (gs *GuestService) GetGuestGin(c *gin.Context) {
 	userId, err := strconv.ParseUint(c.Param("userId"), 10, 64)

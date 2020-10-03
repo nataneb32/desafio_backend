@@ -116,6 +116,7 @@ retorna
   "totalPages": 1
 }
 ```
+
 ### GET /guests/outhotel - Faz uma pesquisa com querys por hospede fora do hotel.
 
 ```/bin/sh
@@ -181,3 +182,11 @@ curl --request DELETE \
 retorna 200 OK
 
 ### 
+
+### POST /checkin - Cria um Checkin
+A dataEntrada e dataSaida do checkin pode ser nula. Assim podemos modelar um check onde a data de saida não está definada, para depois atualizar.
+
+### GET /checkin/:id - Consulta o checkin com id = :id
+### PUT /checkin/:id - Atualiza o checkin com id = :id
+### DELETE /checkin/:id - Deleta o checkin com id = :id
+### GET /checkin/:id/bill - Calcula o preço do checkin com o id = :id
