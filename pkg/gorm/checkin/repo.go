@@ -25,6 +25,9 @@ func (cr *CheckInRepo) GetCheckIn(ci *checkin.CheckIn) error {
 func (cr *CheckInRepo) UpdateCheckIn(id uint, ci *checkin.CheckIn) error {
 	return cr.DB.Model(&checkin.CheckIn{}).Where("id = ?", id).Updates(ci).Error
 }
+func (cr *CheckInRepo) DeleteCheckIn(id uint) error {
+	return cr.DB.Model(&checkin.CheckIn{}).Where("id = ?", id).Delete(&checkin.CheckIn{}).Error
+}
 
 func (cr *CheckInRepo) GetAllCheckIn(ci *checkin.CheckIn) (error, []checkin.CheckIn) {
 	var result []checkin.CheckIn

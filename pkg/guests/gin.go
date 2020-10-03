@@ -23,11 +23,13 @@ func (gs *GuestService) CreateGuestGin(c *gin.Context) {
 func (gs *GuestService) DeleteGuestGin(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
 		return
 	}
 
 	err = gs.GuestRepo.DeleteGuest(uint(id))
 	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
 		return
 	}
 

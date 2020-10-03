@@ -2,6 +2,7 @@ package gorm_guest
 
 import (
 	"gorm.io/gorm"
+	"nataneb32.live/hospedagem/pkg/checkin"
 	"nataneb32.live/hospedagem/pkg/guests"
 )
 
@@ -81,7 +82,11 @@ func CreateGuestRepo(db *gorm.DB) guests.GuestRepo {
 }
 
 func (gs *GuestRepo) DeleteGuest(guestId uint) error {
-	return gs.DB.Model(&guests.Guest{}).Where("id = ?", guestId).Delete(guestId).Error
+	err := gs.DB.Where(&checkin.CheckIn{Hospede: guestId}).Delete(&checkin.CheckIn{Hospede: guestId}).Error
+	if err != nil {
+		return err
+	}
+	return gs.DB.Model(&guests.Guest{}).Delete(&guests.Guest{ID: guestId}).Error
 }
 
 func (gs *GuestRepo) SearchInHotelGuest(query guests.GuestQuery) struct {

@@ -79,3 +79,19 @@ func (cs *CheckInService) CalculateBillGin(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{"bill": bill})
 }
+
+// Delete Gin Handler
+func (cs *CheckInService) DeleteCheckInGin(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
+		return
+	}
+
+	err = cs.CheckInRepo.DeleteCheckIn(uint(id))
+	if err != nil {
+		c.AbortWithStatusJSON(400, gin.H{"error": true, "message": err.Error()})
+		return
+	}
+	c.Status(200)
+}

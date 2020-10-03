@@ -41,7 +41,7 @@ func TestBillingExtraDairy(t *testing.T) {
 	bs := billing.CreateBillingService(1500, 12000, 2000, 15000)
 	dataEntrada := time.Date(2020, 10, 20, 3, 0, 0, 0, time.UTC)
 	dataSaida := time.Date(2020, 10, 21, 16, 31, 0, 0, time.UTC)
-	bill := bs.CalculateBillOf(dataEntrada, dataSaida, true)
+	bill := bs.CalculateBillOf(dataEntrada, dataSaida, false)
 	if bill != 24000 {
 		t.Errorf("Expected 24000 got %d", bill)
 	}

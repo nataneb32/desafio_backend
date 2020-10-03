@@ -10,6 +10,6 @@ type CheckInRepo interface {
 	GetAllCheckIn(*checkin.CheckIn) (error, []checkin.CheckIn)
 	GetNewestCheckInOf(guestId uint) (error, checkin.CheckIn)
 	CreateCheckIn(*checkin.CheckIn) error
-	//	DeleteGuest(Guest) error
+	DeleteCheckIn(uint) error
 	UpdateCheckIn(uint, *checkin.CheckIn) error
 }

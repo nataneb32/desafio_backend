@@ -96,7 +96,48 @@ Return
 		},"lastBill":414000,"totalBill":1242000}
 ```
 
-### GET /guests - Faz uma pesquisa com querys pelo hospede.
+### GET /guests/inhotel - Faz uma pesquisa com querys por hospedes no hotel.
+```/bin/sh
+curl --request GET \
+  --url 'http://localhost:8080/guests/inhotel?nome=Foo&limit=10&page=1&telefone=11111111&documento=12345%2F123&=' 
+``` 
+retorna
+```json
+{
+  "guests": [
+    {
+      "id": 6,
+      "nome": "Foo",
+      "telefone": "11111111",
+      "documento": "12345/123",
+      "checkins": []
+    }
+  ],
+  "totalPages": 1
+}
+```
+### GET /guests/outhotel - Faz uma pesquisa com querys por hospede fora do hotel.
+
+```/bin/sh
+curl --request GET \
+  --url 'http://localhost:8080/guests/outhotel?nome=Foo&limit=10&page=1&telefone=11111111&documento=12345%2F123&=' 
+``` 
+retorna
+```json
+{
+  "guests": [
+    {
+      "id": 6,
+      "nome": "Foo",
+      "telefone": "11111111",
+      "documento": "12345/123",
+      "checkins": []
+    }
+  ],
+  "totalPages": 1
+}
+```
+### GET /guests - Faz uma pesquisa com querys por hospedes.
 ```/bin/sh
 curl --request GET \
   --url 'http://localhost:8080/guests?nome=Foo&limit=10&page=1&telefone=11111111&documento=12345%2F123&=' 

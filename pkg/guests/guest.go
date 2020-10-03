@@ -9,5 +9,6 @@ type Guest struct {
 	Nome      string            `json:"nome"`
 	Telefone  string            `json:"telefone"`
 	Documento string            `json:"documento"`
-	CheckIns  []checkin.CheckIn `json:"checkins" gorm:"foreignKey:Hospede"` //TODO: delete on cascade
+	CheckIns  []checkin.CheckIn `json:"checkins" gorm:"foreignKey:Hospede;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` //TODO: delete on cascade
+
 }
