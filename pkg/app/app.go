@@ -49,7 +49,7 @@ func (a *App) init_repositories() {
 
 func (a *App) init_services() {
 	// Setting fees to the billing services
-	a.BillingService = billing.NewBillingService(1500, 12000, 2000, 15000)
+	a.BillingService = billing.CreateBillingService(1500, 12000, 2000, 15000)
 	a.CheckInService = checkins.CreateCheckInService(a.CheckInRepo, a.BillingService)
 	a.GuestService = guests.CreateGuestService(a.GuestRepo, a.BillingService)
 }

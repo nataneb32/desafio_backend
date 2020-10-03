@@ -14,7 +14,7 @@ type BillingService struct {
 }
 
 // Create a billing service. fee is in cents.
-func NewBillingService(pf, df, wpf, wdf uint) *BillingService {
+func CreateBillingService(pf, df, wpf, wdf uint) *BillingService {
 	return &BillingService{
 		DairyFee:          df,
 		WeekendDairyFee:   wdf,

@@ -26,11 +26,22 @@ adequado para resolver o problema;
 solução, você deve detalhar o que deve ser feito no arquivo README.md de seu
 projeto.
 
-## Como dar build?
+## Como dar build e run?
+### Build
+
+O docker e docker-compose precisam estar instalados no sistema. 
+[Instalar Docker Compose](https://docs.docker.com/compose/install/)
+[Instalar Docker](https://docs.docker.com/engine/install/)
+
 ```/bin/sh
+sudo docker-compose pull
 sudo docker-compose build
+```
+### Run
+```/bin/sh
 sudo docker-compose up
 ```
+Por padrão o aplicativo vai estar rodando na porta 8080.
 
 ## API com exemplos.
 
@@ -127,3 +138,5 @@ curl --request DELETE \
 ```
 
 retorna 200 OK
+
+### 
